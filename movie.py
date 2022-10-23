@@ -87,7 +87,7 @@ class TestDemo:
 
     def test_download_movie(self, sb):
         # 前置
-        option = (1, "三国演义3")
+        option = (0, "神探大战")
         url = "https://www.dygod.net/"
         sb.open(url)
         sb.maximize_window()
@@ -99,6 +99,8 @@ class TestDemo:
         sb.wait(seconds=5)
         ui.close_notice()
         source_css = ui.get_source_css(option=option)
+        if option[0] == 0:
+            source_css = [source_css[0]]
         for css in source_css:
             ui.click_source_url(name_css=css)
         # 后置
