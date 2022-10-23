@@ -77,7 +77,7 @@ class TestDemo:
 
     def test_download_movie(self, sb):
         # 前置
-        movie_name = "三国演义"
+        movie_name = "三国演义1"
         url = "https://www.dygod.net/"
         sb.open(url)
         sb.maximize_window()
