@@ -6,7 +6,7 @@ class DianYinTianTangPage:
 
     DT_SEARCH_LIST = "table.tbspan:nth-child({}) .ulink"
 
-    # 搜索页
+    # 搜索页test
     DT_SEARCH_INPUT = ".formhue"
     DT_SEARCH = ".searchr"
     # 搜索结果页
