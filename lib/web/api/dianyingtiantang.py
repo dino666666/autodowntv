@@ -1,22 +1,8 @@
-import pytest
 import re
+
 import pyautogui
-from PIL import Image
 
-
-class DianYinTianTangPage:
-
-    DT_SEARCH_LIST = "table.tbspan:nth-child({}) .ulink"
-
-    # 搜索页test
-    DT_SEARCH_INPUT = ".formhue"
-    DT_SEARCH = ".searchr"
-    # 搜索结果页
-    DT_SEARCH_RESULT = ".ulink"
-    CLOSE_NOTICE_FIXED_BOX = "#noticeFixedBox .nfbClose"
-    # 资源列表
-    DT_SOURCE = ("#downlist > table:nth-child({}) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1) > a",
-                 "#Zoom > table:nth-child({}) > tbody:nth-child(1) > tr:nth-child(1) > td > font")
+from lib.web.page import DianYinTianTangPage
 
 
 class DianYinTianTangApi:
@@ -87,54 +73,5 @@ class DianYinTianTangApi:
         pyautogui.press("enter")
         self.sb.wait(3)
 
-    @staticmethod
-    def get_center_image():
-        # mouse_info = pyautogui.mouseInfo()
-        # print(f"mouse_info: {mouse_info}")
-        path = "center.png"
-        im = pyautogui.screenshot()
-        print(f"im: {im}")
-        om = im.crop((742, 706, 1134, 740))  # 左 上 右 下
-        print(f"om: {om}")
-        om.save(path)
-        return path
-
-    @staticmethod
-    def click_center(path):
-        left, top, width, height = pyautogui.locateOnScreen(path)
-        print(f"left, top, width, height: {left, top, width, height}")
-        center = pyautogui.center((left, top, width, height))
-        print(f"center: {center}")
-        pyautogui.click(center)
-        print(f"点击 {path} center 成功")
-
     def download_confirm(self):
         pass
-
-
-class TestDemo:
-
-    def test_download_movie(self, sb):
-        # 前置
-        option = (0, "神探大战")
-        url = "https://www.dygod.net/"
-        sb.open(url)
-        sb.maximize_window()
-        sb.wait(seconds=3)
-        # 搜索电影
-        ui = DianYinTianTangApi(sb)
-        ui.set_search(name=option[1])
-        ui.select_source(name=option[1])
-        sb.wait(seconds=5)
-        ui.close_notice()
-        source_css = ui.get_source_css(option=option)
-        if option[0] == 0:
-            source_css = [source_css[0]]
-        for css in source_css:
-            ui.click_source_url(source_type=option[0], source_css=css)
-            ui.accept_xunlei()
-            path = ui.get_center_image()
-            ui.click_center(path)
-            ui.download_confirm()
-        # 后置
-        sb.tearDown()
