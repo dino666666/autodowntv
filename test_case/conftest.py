@@ -9,6 +9,3 @@ def create_obj():
     ui = Base()
     yield ui
     print("[后置]create_obj")
-
-
-
