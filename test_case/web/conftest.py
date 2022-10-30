@@ -2,8 +2,8 @@ import pytest
 
 
 @pytest.fixture(scope="class")
-def fixt_open_browser(create_obj):
-    ui = create_obj
+def fixt_open_browser(create_ui_obj):
+    ui = create_ui_obj
     print("[前置]fixt_open_browser")
     ui.setUp()
     yield ui

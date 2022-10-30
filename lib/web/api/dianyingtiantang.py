@@ -2,19 +2,26 @@ import re
 
 import pyautogui
 
+from lib.web.api.browser import Browser
 from lib.web.page import DianYinTianTangPage
 
 
-class DianYinTianTangApi:
+class DianYinTianTang:
+    def dian_yin_tian_tang(self):
+        print(f"self: {self}")
+        return DianYinTianTangTmp(self)
 
-    def __init__(self, obj):
-        self.sb = obj
+
+class DianYinTianTangTmp(Browser):
+
+    def __init__(self, ui):
+        super().__init__(ui)
 
     def set_search(self, name):
         print(f"输入搜索内容：{name}, 点击[搜索]按钮")
-        self.sb.set_text(selector=DianYinTianTangPage.DT_SEARCH_INPUT, text=name)
-        self.sb.click(DianYinTianTangPage.DT_SEARCH)
-        self.sb.wait(seconds=5)
+        self.ui.set_text(selector=DianYinTianTangPage.DT_SEARCH_INPUT, text=name)
+        self.ui.click(DianYinTianTangPage.DT_SEARCH)
+        self.ui.wait(seconds=5)
 
     @staticmethod
     def __get_name_keyword(text):
@@ -27,7 +34,7 @@ class DianYinTianTangApi:
     def __get_index(self, movie_name):
         index = 1
         while True:
-            text = self.sb.get_text(DianYinTianTangPage.DT_SEARCH_LIST.format(index))
+            text = self.ui.get_text(DianYinTianTangPage.DT_SEARCH_LIST.format(index))
             key_word = self.__get_name_keyword(text)[0]
             if movie_name == key_word:
                 return index, text
@@ -35,13 +42,13 @@ class DianYinTianTangApi:
 
     def select_source(self, name):
         index, text = self.__get_index(name)
-        self.sb.click(DianYinTianTangPage.DT_SEARCH_LIST.format(index))
+        self.ui.click(DianYinTianTangPage.DT_SEARCH_LIST.format(index))
         print(f"搜索到片源: [{text}], 并点击")
 
     def close_notice(self):
         print(f"如果弹出紧急通知，则点击关闭")
-        if self.sb.is_element_visible(DianYinTianTangPage.CLOSE_NOTICE_FIXED_BOX):
-            self.sb.click(DianYinTianTangPage.CLOSE_NOTICE_FIXED_BOX)
+        if self.ui.is_element_visible(DianYinTianTangPage.CLOSE_NOTICE_FIXED_BOX):
+            self.ui.click(DianYinTianTangPage.CLOSE_NOTICE_FIXED_BOX)
 
     def get_source_css(self, option):
         """
@@ -52,11 +59,11 @@ class DianYinTianTangApi:
         source_css = []
         i = 1
         while True:
-            if self.sb.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i)):
+            if self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i)):
                 source_css.append(i)
-            if all([self.sb.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i)),
-                    not self.sb.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i+1)),
-                    not self.sb.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i+2))]):
+            if all([self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i)),
+                    not self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i+1)),
+                    not self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i+2))]):
                 break
             i += 1
         print(f"获取到资源列表：{source_css}")
@@ -64,14 +71,14 @@ class DianYinTianTangApi:
 
     def click_source_url(self, source_type, source_css):
         print(f"点击 {source_css} URL")
-        self.sb.click(DianYinTianTangPage.DT_SOURCE[source_type].format(source_css))
+        self.ui.click(DianYinTianTangPage.DT_SOURCE[source_type].format(source_css))
 
     def accept_xunlei(self):
-        self.sb.wait(1.5)
+        self.ui.wait(1.5)
         pyautogui.press("left")
-        self.sb.wait(1.5)
+        self.ui.wait(1.5)
         pyautogui.press("enter")
-        self.sb.wait(3)
+        self.ui.wait(3)
 
     def download_confirm(self):
         pass

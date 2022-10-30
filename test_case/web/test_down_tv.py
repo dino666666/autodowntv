@@ -1,6 +1,6 @@
 
-from lib.web.api.dianyingtiantang import DianYinTianTangApi
-from lib.tool.mypyautogui import MyPyautogui
+from lib.web.api.dianyingtiantang import DianYinTianTangTmp
+from lib.tool.dopicture.mypyautogui import MyPyautogui
 
 
 class TestDownloadMovie:
@@ -23,7 +23,7 @@ class TestDownloadMovie:
         option = (0, "神探大战")
         picture = "center.png"
         # 搜索电影
-        ui = DianYinTianTangApi(cwb)
+        ui = DianYinTianTangTmp(cwb)
         ui.set_search(name=option[1])
         ui.select_source(name=option[1])
         cwb.wait(seconds=5)
@@ -34,13 +34,8 @@ class TestDownloadMovie:
         for css in source_css:
             ui.click_source_url(source_type=option[0], source_css=css)
             ui.accept_xunlei()
-            MyPyautogui(picture).crop_size_and_click_center(742, 706, 1134, 740)
+            MyPyautogui(picture).crop_custom_size_and_click(742, 706, 1134, 740)
             ui.download_confirm()
-
-    def test_demo(self):
-        def x(*args):
-            print(args)
-        x(1, 3, 4, 5)
 
 
 if __name__ == '__main__':
