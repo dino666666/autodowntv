@@ -1,14 +1,28 @@
 
-class TestDemo:
 
-    def test_demo1(self, sb):
-        sb.open("www.baidu.com")
+class B:
+    def __init__(self, dut):
+        self.dut = dut
 
-    def test_demo2(self):
-        print(123)
+    def fun_b(self):
+        print("xx")
 
 
-if __name__ == '__main__':
-    import pytest
-    #pytest.main(["-vvs", "test_demo.py::TestDemo::test_demo2", "--gui"])
-    pytest.main(["-vvs", "test_demo.py::TestDemo::test_demo1", "--browser=firefox", "--gui"])
+class C:
+    def demo(self):
+        print(f"self: {self}")
+        return B(self)
+
+
+class A(C):
+    def __init__(self, dut):
+        super().__init__()
+        self.dut = dut
+
+
+def test_x():
+    dut = "机器"
+    a = A(dut)
+    print(f"a: {a}")
+    a.demo().fun_b()
+

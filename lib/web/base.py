@@ -5,6 +5,7 @@ from lib.web.api.dianyingtiantang import DianYinTianTang
 
 class UiBase(BaseCase):
 
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
