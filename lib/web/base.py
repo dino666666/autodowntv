@@ -1,10 +1,10 @@
 
 from seleniumbase import BaseCase
-from lib.web.api.dianyingtiantang import DianYinTianTang
+from lib.web.api import dianyingtiantang
 
 
-class UiBase(BaseCase):
-
+class UiBase(BaseCase,
+             dianyingtiantang.DianYinTianTang):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -13,5 +13,4 @@ class UiBase(BaseCase):
         super().setUp()
 
     def tearDown(self):
-        self.save_teardown_screenshot()
         super().tearDown()

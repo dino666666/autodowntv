@@ -29,19 +29,24 @@ class DianYinTianTangTmp(Browser):
         if key_word:
             return key_word
         else:
-            raise Exception("未搜索到片源")
+            return [text]
 
-    def __get_index(self, movie_name):
+
+    def __get_index(self, movie_name, actor=None):
         index = 1
         while True:
             text = self.ui.get_text(DianYinTianTangPage.DT_SEARCH_LIST.format(index))
             key_word = self.__get_name_keyword(text)[0]
-            if movie_name == key_word:
-                return index, text
+            if actor:
+                if movie_name == key_word and actor in text:
+                    return index, text
+            else:
+                if movie_name == key_word:
+                    return index, text
             index += 1
 
-    def select_source(self, name):
-        index, text = self.__get_index(name)
+    def select_source(self, name, actor=None):
+        index, text = self.__get_index(name, actor)
         self.ui.click(DianYinTianTangPage.DT_SEARCH_LIST.format(index))
         print(f"搜索到片源: [{text}], 并点击")
 
@@ -59,11 +64,11 @@ class DianYinTianTangTmp(Browser):
         source_css = []
         i = 1
         while True:
-            if self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i)):
+            if self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option].format(i)):
                 source_css.append(i)
-            if all([self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i)),
-                    not self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i+1)),
-                    not self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option[0]].format(i+2))]):
+            if all([self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option].format(i)),
+                    not self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option].format(i+1)),
+                    not self.ui.is_element_visible(DianYinTianTangPage.DT_SOURCE[option].format(i+2))]):
                 break
             i += 1
         print(f"获取到资源列表：{source_css}")
@@ -79,6 +84,3 @@ class DianYinTianTangTmp(Browser):
         self.ui.wait(1.5)
         pyautogui.press("enter")
         self.ui.wait(3)
-
-    def download_confirm(self):
-        pass

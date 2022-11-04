@@ -18,3 +18,13 @@ def create_tool_obj():
     tool = ToolBase()
     yield tool
     print("[后置]create_ui_obj")
+
+
+@pytest.fixture(scope="class")
+def fixt_open_browser(create_ui_obj):
+    print("[前置]fixt_open_browser")
+    ui = create_ui_obj
+    ui.setUp()
+    yield ui
+    ui.tearDown()
+    print("[后置]fixt_open_browser")
