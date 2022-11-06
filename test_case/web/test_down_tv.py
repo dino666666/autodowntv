@@ -36,6 +36,7 @@ class TestDownloadMovie:
             ui.click_source_url(1, css)
             ui.accept_xunlei()
             create_tool_obj.tool_pyautogui().crop_custom_size_and_click(picture, 742, 706, 1134, 740)
+            cwb.wait(5)
 
 
 if __name__ == '__main__':

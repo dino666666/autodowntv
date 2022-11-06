@@ -31,7 +31,6 @@ class DianYinTianTangTmp(Browser):
         else:
             return [text]
 
-
     def __get_index(self, movie_name, actor=None):
         index = 1
         while True:
